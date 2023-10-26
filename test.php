@@ -2,20 +2,20 @@
 //Création d'une classe personnage
 class Personnage
 {
-    private $nom;
-    private $puissance;
-    private $pointdevie;
+    protected $nom;
+    protected $puissance;
+    protected $pointdevie;
     //Constructeur donnant un nom et un pouvoir
     public function __construct($nom,$puissance,$pointdevie){
         $this->nom=$nom;
         $this->puissance=$puissance;
         $this->pointdevie=$pointdevie;
     }
-    public function afficherNom($nom){
-        return $nom;
+    public function afficherNom(){
+        return $this->nom;
     }
-    public function afficherSante($pointdevie){
-        return $pointdevie;
+    public function afficherSante(){
+        return $this->pointdevie;
     }
 }
 //Création d'une classe Hero avec pour parent la classe personnage
@@ -29,26 +29,37 @@ class Heros extends Personnage
             $this->avantage=$avantage;
         }
     //Fonction pour afficher les différentes parties
-    public function afficherNom($nom){
-        return $nom;
+    public function afficherNom(){
+        return $this->nom;
     }
-    public function afficherSante($pointdevie){
-        return $pointdevie;
+    public function afficherSante(){
+        return $this->pointdevie;
     }
-    public function afficherPuissance($puissance){
-        return $puissance;
+    public function afficherPuissance(){
+        return $this->puissance;
     }
-    public function afficherAvantage($avantage){
-        return $avantage;
+    public function afficherAvantage(){
+        return $this->avantage;
     }
+    public function attaquer(Vilain $cible){
+        $degats = $this->afficherPuissance();
+        $cible->subirDegats($degats);
+    }
+    public function subirDegats($degats) {
+        $this->pointdevie -= $degats;
+        if ($this->pointdevie <= 0) {
+            $this->mourrir();
+        }
+    }
+    public function mourrir() {
+        echo $this->afficherNom() . " est mort.";
+    }
+    
 }
 //Creation de la classe vilain avec pour parent la classe personnage
 class Vilain extends Personnage
 {
     //Définition des variables
-    private $nom;
-    private $puissance;
-    private $pointdevie;
     private $destructeur;
     //Recuperation avec la classe parent et ajout de l'attribut destructeur
     public function __construct($nom,$pointdevie,$puissance,$destructeur){
@@ -56,38 +67,26 @@ class Vilain extends Personnage
             $this->destructeur=$destructeur;
         }
     //Fonctions permettant de renvoyer les différents attributs du vilain créé
-    public function afficherNom($nom){
-        return $nom;
+    public function afficherNom(){
+        return $this->nom;
     }
-    public function afficherSante($pointdevie){
-        return $pointdevie;
+    public function afficherSante(){
+        return $this->pointdevie;
     }
-    public function afficherPouvoir($pouvoir){
-        return $pouvoir;
+    public function afficherPuissance(){
+        return $this->puissance;
     }
-    public function afficherDestructeur($destructeur){
-        return $destructeur;
+    public function afficherDestructeur(){
+        return $this->destructeur;
     }
+    
 }
 //Création d'un héro
-$nom="Jean";
-$pouvoir= "voler";
-$pointdevie= "100";
-$avantage= "toujours plus vite";
-$heros=new Heros($nom,$pouvoir,$pointdevie,$avantage);
-echo "Pour le héro : ";
-echo $heros->afficherNom($nom)." ";
-echo $heros->afficherSante($pointdevie)." ";
-echo $heros->afficherPuissance($pouvoir)." ";
-echo $heros->afficherAvantage($avantage)." ";
-$nom="Janne";
-$pouvoir= "maitre des explosions";
-$destructeur="Lance des bombes";
-echo "Pour le vilain : ";
-$vilain= new Vilain($nom, $pouvoir,$pointdevie,$destructeur);
-echo $vilain->afficherNom($nom)." ";
-echo $vilain->afficherSante($pointdevie)." ";
-echo $vilain->afficherPouvoir($pouvoir)." ";
-echo $vilain->afficherDestructeur($destructeur);
+$heros = new Heros("Jean", 100, 800, "toujours plus vite");
+$vilain = new Vilain("Janne", 100, 100, "Lance des bombes");
+
+$heros->attaquer($vilain);
+
+echo $vilain->afficherSante();
 
 ?>
