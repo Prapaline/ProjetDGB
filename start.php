@@ -21,33 +21,13 @@ class Personnage
 //Création d'une classe Hero avec pour parent la classe personnage
 class Heros extends Personnage
 {
-    private $heros = [];
-    
     //Définition des thermes
     private $avantage;
     //Constructeur avec la classe parent et ajout des avantages
-    public function __construct(){
-            $this->Ajouter("Goku", 20, 100, "Bouclier");
-            $this->Ajouter("Vegeta", 10, 120, "plus de vie");
+    public function __construct($nom,$puissance,$pointdevie,$avantage){
+            parent::__construct($nom,$puissance,$pointdevie);
+            $this->avantage=$avantage;
         }
-        public function Ajouter($nom, $puissance, $pointdevie, $avantage)
-    {
-        $nouveauHero = ['nom' => $nom, 'puissance' => $puissance, 'pointdevie' => $pointdevie, 'avantage' => $avantage];
-        $this->heros[] = $nouveauHero;
-    }
-    //Affichage de tous les héros du tableau
-    public function Afficher()
-    {
-        foreach ($this->heros as $index) {
-            echo "Intitulé : " . $index['nom'] . "\n";
-            echo "A : " . $index['puissance'] . "\n";
-            echo "B : " . $index['pointdevie'] . "\n";
-            echo "C : " . $index['avantage'] . "\n";
-        }
-    }
-    public function AfficherHeroChoisi(){
-        return $this->heros;
-    }
     //Fonction pour afficher les différentes parties
     public function afficherNom(){
         return $this->nom;
@@ -60,9 +40,6 @@ class Heros extends Personnage
     }
     public function afficherAvantage(){
         return $this->avantage;
-    }
-    public function afficherStatistique(){
-        echo $this->nom." possède désormais ".$this->pointdevie." point de vie et ".$this->puissance." point d'attaque ! \n";
     }
     public function attaquer(Mechants $cible){
         $degats = $this->afficherPuissance();
@@ -102,9 +79,6 @@ class Mechants extends Personnage
     public function afficherDestructeur(){
         return $this->destructeur;
     }
-    public function afficherStatistique(){
-        echo $this->nom." possède désormais ".$this->pointdevie." point de vie et ".$this->puissance." point d'attaque !";
-    }
     public function attaquer(Heros $cible){
         $degats = $this->afficherPuissance();
         $cible->subirDegats($degats);
@@ -118,23 +92,26 @@ class Mechants extends Personnage
     public function mourrir() {
         echo $this->afficherNom() . " est mort.";
     }
-
 }
 //Création d'un héro
-$heros=new Heros();
+$heros = new Heros("Jean", 100, 800, "toujours plus vite");
 $mechant = new Mechants("Janne", 100, 100, "Lance des bombes");
+
+$heros->attaquer($mechant);
+
+echo $mechant->afficherSante();
 
 //Création d'un héro
 
 //$heros=new Heros($nom,$puissance,$pointdevie,$avantage);
 
-//$Goku=new Heros("Goku", 20, 100);
-//$Vegeta = new Heros("Vegeta", 10, 120);
+$Goku=new Heros("Goku", "20 points de dégats", 100, "Bouclier");
+$Vegeta = new Heros("Vegeta", "10 points de dégats", 120, "plus de vie");
 
 //$vilain= new Mechants($nom, $puissance,$pointdevie,$destructeur);
 
-$Freezer = new Mechants("Freezer", 10, 140, "plus de vie");
-$Cell = new Mechants("Cell", 15, 100, "plus de dégat");
+$Freezer = new Mechants("Freezer", "10 points de dégats", 140, "plus de vie");
+$Cell = new Mechants("Cell", "15 points de dégats", 100, "plus de dégat");
 
 
 
@@ -157,11 +134,8 @@ function Menu($Commence,$heros,$mechant){
         switch ($choix) {
             case "1":
                 echo"Jouer";
-                Demarrer($heros);
-                echo $heros->Afficher();
                 $heros->attaquer($mechant);
                 echo $mechant->afficherSante();
-                echo "";
                 break;
             case "2":
                 echo "Le jeu comporte au minimum 2 joueurs. Le but est de remporté le plus de combat possible pour gagner le jeu.\n
@@ -191,30 +165,6 @@ Les Méchants :\n
             default:
         }
         
-    }
-    
-}
-
-function Demarrer($heros){
-    $choix_classe=readline("Tu veux être un Héro ou un Méchant ? (Héro / Méchant) \n");
-    switch ($choix_classe) {
-        case "Héro":
-            echo $heros->afficherNom() . "\n";
-            $choix_perso=readline("Quel personnage choisis-tu ?");
-            if (isset($herosList[$choix_perso])) {
-                $heroChoisi = $heros[$choix_perso];
-                echo "Personnage choisi :\n";
-                echo "Intitulé : " . $heroChoisi['nom'] . "\n";
-                echo "A : " . $heroChoisi['puissance'] . "\n";
-                echo "B : " . $heroChoisi['pointdevie'] . "\n";
-                echo "C : " . $heroChoisi['avantage'] . "\n";
-            }
-                break;
-        case "Méchant":
-            // echo $Freezer . "\n" . $Cell . "\n";
-            // $choix_perso=readline("Quel personnage choisis-tu ?");
-            break;
-        default:
     }
     
 }
