@@ -41,6 +41,9 @@ class Heros extends Personnage
     public function afficherAvantage(){
         return $this->avantage;
     }
+    public function afficherStatistique(){
+        echo $this->nom." possède désormais ".$this->pointdevie." point de vie et ".$this->puissance." point d'attaque ! \n";
+    }
     public function attaquer(Mechants $cible){
         $degats = $this->afficherPuissance();
         $cible->subirDegats($degats);
@@ -62,7 +65,7 @@ class Mechants extends Personnage
     //Définition des variables
     private $destructeur;
     //Recuperation avec la classe parent et ajout de l'attribut destructeur
-    public function __construct($nom,$pointdevie,$puissance,$destructeur){
+    public function __construct($nom,$puissance,$pointdevie,$destructeur){
             parent::__construct($nom,$puissance,$pointdevie);
             $this->destructeur=$destructeur;
         }
@@ -92,6 +95,9 @@ class Mechants extends Personnage
     public function mourrir() {
         echo $this->afficherNom() . " est mort.";
     }
+    public function afficherStatistique(){
+        echo $this->nom." possède désormais ".$this->pointdevie." point de vie et ".$this->puissance." point d'attaque ! \n";
+    }
 }
 //Création d'un héro
 $heros = new Heros("Jean", 100, 800, "toujours plus vite");
@@ -105,13 +111,13 @@ echo $mechant->afficherSante();
 
 //$heros=new Heros($nom,$puissance,$pointdevie,$avantage);
 
-$Goku=new Heros("Goku", "20 points de dégats", 100, "Bouclier");
-$Vegeta = new Heros("Vegeta", "10 points de dégats", 120, "plus de vie");
+$Goku=new Heros("Goku", 20, 100, "Bouclier");
+$Vegeta = new Heros("Vegeta", 10, 120, "plus de vie");
 
 //$vilain= new Mechants($nom, $puissance,$pointdevie,$destructeur);
 
-$Freezer = new Mechants("Freezer", "10 points de dégats", 140, "plus de vie");
-$Cell = new Mechants("Cell", "15 points de dégats", 100, "plus de dégat");
+$Freezer = new Mechants("Freezer", 10, 140, "plus de vie");
+$Cell = new Mechants("Cell", 15, 100, "plus de dégat");
 
 
 
@@ -121,7 +127,8 @@ echo "Bonjour à tous, et bienvenue sur 'Dragon Ball Game'\n
     Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le permets'\n";
 
 $Commence=readline("Voulez-vous commencer (Oui / Non)? ");
-function Menu($Commence,$heros,$mechant){
+//Trouver pourquoi la fonction empêche le switch de fonctionner
+// function Menu($Commence,$Goku,$Cell){
     
     if ($Commence== "Oui"){
         echo "\nBienvenue dans le menu du jeu. Que voulez-vous faire ?\n
@@ -134,8 +141,26 @@ function Menu($Commence,$heros,$mechant){
         switch ($choix) {
             case "1":
                 echo"Jouer";
-                $heros->attaquer($mechant);
-                echo $mechant->afficherSante();
+                //Tant que vie heros>0 && vie méchant>0
+                $vieHero=$Goku->afficherSante();
+                $vieMechant=$Cell->afficherSante();
+                while ($vieHero>0 && $vieMechant>0){
+                    $Goku->attaquer($Cell);
+                    $vieMechant=$Cell->afficherSante();
+                    $Cell->afficherStatistique();
+                    $Cell->attaquer($Goku);
+                    $vieHero=$Goku->afficherSante();
+                    $Goku->afficherStatistique();
+                }
+                //If
+                //Victoire = Message vixtoire + augmentation puissance/vie... $niveau+=1 DEblocage de Kamehameha 
+                //Rajouter interaction joueur : choix attaque
+                //ELSE
+                //DEFAITE = GAME OVER ==> Retour Menu Principal
+                //Faire message victoire combat/défaite
+                //Système d'objectif
+                //Système de sauvegarde
+
                 break;
             case "2":
                 echo "Le jeu comporte au minimum 2 joueurs. Le but est de remporté le plus de combat possible pour gagner le jeu.\n
@@ -143,7 +168,7 @@ Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le
                 $revenir_menu=readline("Pour revenir sur le Menu merci de taper 'Go' : \n");
                 if ($revenir_menu== "Go"){
                     popen("cls", "w");
-                    Menu($Commence,$heros,$mechant);
+                    //Menu($Commence,$Goku,$Cell);
                 }
                 break;
             case "3":
@@ -157,7 +182,7 @@ Les Méchants :\n
                 if ($revenir_menu== "Go"){
                     popen("cls", "w");
                 }
-                Menu($Commence,$heros,$mechant);
+                //Menu($Commence,$Goku,$Cell);
                 break;
             case "4":
                 echo ("Vous avez quitter le jeu.");
@@ -167,7 +192,7 @@ Les Méchants :\n
         
     }
     
-}
+//}
 
-Menu($Commence,$heros,$mechant);
+//Menu($Commence,$heros,$mechant);
 ?>
