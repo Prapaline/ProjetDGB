@@ -14,8 +14,8 @@ class Personnage
     public function afficherNom($nom){
         return $nom;
     }
-    public function afficherSante(){
-        return $this->pointdevie;
+    public function afficherSante($pointdevie){
+        return $pointdevie;
     }
 }
 //Création d'une classe Hero avec pour parent la classe personnage
@@ -32,8 +32,8 @@ class Heros extends Personnage
     public function afficherNom($nom){
         return $nom;
     }
-    public function afficherSante(){
-        return $this->pointdevie;
+    public function afficherSante($pointdevie){
+        return $pointdevie;
     }
     public function afficherPuissance($puissance){
         return $puissance;
@@ -59,8 +59,8 @@ class Vilain extends Personnage
     public function afficherNom($nom){
         return $nom;
     }
-    public function afficherSante(){
-        return $this->pointdevie;
+    public function afficherSante($pointdevie){
+        return $pointdevie;
     }
     public function afficherPouvoir($pouvoir){
         return $pouvoir;
@@ -77,7 +77,7 @@ $avantage= "toujours plus vite";
 $heros=new Heros($nom,$pouvoir,$pointdevie,$avantage);
 echo "Pour le héro : ";
 echo $heros->afficherNom($nom)." ";
-echo $heros->afficherSante()." ";
+echo $heros->afficherSante($pointdevie)." ";
 echo $heros->afficherPuissance($pouvoir)." ";
 echo $heros->afficherAvantage($avantage)." ";
 $nom="Janne";
@@ -86,7 +86,7 @@ $destructeur="Lance des bombes";
 echo "Pour le vilain : ";
 $vilain= new Vilain($nom, $pouvoir,$pointdevie,$destructeur);
 echo $vilain->afficherNom($nom)." ";
-echo $vilain->afficherSante()." ";
+echo $vilain->afficherSante($pointdevie)." ";
 echo $vilain->afficherPouvoir($pouvoir)." ";
 echo $vilain->afficherDestructeur($destructeur);
 
