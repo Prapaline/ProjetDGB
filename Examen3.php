@@ -2,15 +2,19 @@
 //Création d'une classe personnage
 class Personnage
 {
+    //création de variable en protected, car nous devons y avoir accès dans l'héritage
     protected $nom;
     protected $puissance;
     protected $pointdevie;
-    //Constructeur donnant un nom et un pouvoir
+
+    //Constructeur donnant un nom, un pouvoir et les points de vie
     public function __construct($nom,$puissance,$pointdevie){
         $this->nom=$nom;
         $this->puissance=$puissance;
         $this->pointdevie=$pointdevie;
     }
+
+    //Création de fonction pour appeler les variables (fonction _get)
     public function afficherNom(){
         return $this->nom;
     }
@@ -21,20 +25,29 @@ class Personnage
 //Création d'une classe Hero avec pour parent la classe personnage
 class Heros extends Personnage
 {
-    //Définition des thermes
+    //Création d'une variable en private (privé), car nous n'utilisons cette variable que dans la classe Heros
     private $avantage;
-    //Constructeur avec la classe parent et ajout des avantages
+
+    //Constructeur avec la classe parent qui reprend le constructeur de la classe Personnage, et ajout des avantages
     public function __construct($nom,$puissance,$pointdevie,$avantage){
             parent::__construct($nom,$puissance,$pointdevie);
             $this->avantage=$avantage;
         }
-    //Fonction pour afficher les différentes parties
+
+    //Création de fonction pour appeler les variables (fonction _get)
     public function afficherNom(){
         return $this->nom;
     }
     public function afficherSante(){
         return $this->pointdevie;
     }
+
+    //Création de fonctions _set pour pouvoir modifier les variables
+    public function setSante($pointdevie){
+        $this->pointdevie=$pointdevie;
+    }
+
+    //Fonction permettant d'afficher la puissance, l'avantage et la fiche statistique
     public function afficherPuissance(){
         return $this->puissance;
     }
@@ -57,6 +70,13 @@ class Heros extends Personnage
     public function mourrir() {
         echo $this->afficherNom() . " est mort.";
     }
+    public function niveauSuperieur($niveau){
+        $augmentationvie=$this->pointdevie*0.5;
+        $this->pointdevie += $augmentationvie;
+        $augmentationpuissance=$this->puissance*0.5;
+        $this->puissance += $augmentationpuissance;
+        echo "Felicitation, vous êtes passé au niveau ".$niveau.", vos points de vie sont de ".$this->pointdevie." et votre attaque est de ".$this->puissance." !";
+    }
     
 }
 //Creation de la classe vilain avec pour parent la classe personnage
@@ -76,6 +96,17 @@ class Mechants extends Personnage
     public function afficherSante(){
         return $this->pointdevie;
     }
+    public function setSante($pointdevie){
+        $this->pointdevie=$pointdevie;
+    }
+    public function niveauSuperieur(){
+        $augmentationvie=$this->pointdevie*0.5;
+        $this->pointdevie += $augmentationvie;
+        $augmentationpuissance=$this->puissance*0.5;
+        $this->puissance += $augmentationpuissance;
+        echo "Un nouvel ennemi apparait, ses points de vie sont de ".$this->pointdevie." et son attaque est de ".$this->puissance." !\n";
+    }
+
     public function afficherPuissance(){
         return $this->puissance;
     }
@@ -93,19 +124,12 @@ class Mechants extends Personnage
         }
     }
     public function mourrir() {
-        echo $this->afficherNom() . " est mort.";
+        echo $this->afficherNom() . " est mort.\n";
     }
     public function afficherStatistique(){
         echo $this->nom." possède désormais ".$this->pointdevie." point de vie et ".$this->puissance." point d'attaque ! \n";
     }
 }
-//Création d'un héro
-$heros = new Heros("Jean", 100, 800, "toujours plus vite");
-$mechant = new Mechants("Janne", 100, 100, "Lance des bombes");
-
-$heros->attaquer($mechant);
-
-echo $mechant->afficherSante();
 
 //Création d'un héro
 
@@ -126,9 +150,9 @@ echo "Bonjour à tous, et bienvenue sur 'Dragon Ball Game'\n
     Le jeu comporte au minimum 2 joueurs. Le but est de remporté le plus de combat possible pour gagner le jeu.\n
     Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le permets'\n";
 
-$Commence=readline("Voulez-vous commencer (Oui / Non)? ");
+$Commence=trim(readline("Voulez-vous commencer (Oui / Non)? "));
 //Trouver pourquoi la fonction empêche le switch de fonctionner
-// function Menu($Commence,$Goku,$Cell){
+//function Menu($Commence,$Goku,$Cell){
     
     if ($Commence== "Oui"){
         echo "\nBienvenue dans le menu du jeu. Que voulez-vous faire ?\n
@@ -137,35 +161,144 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? ");
     3. Découvrir les personnages\n
     4. Quitter le jeu\n";
 
-    $choix=readline("Quel est votre choix ?\n");
+    $choix=trim(readline("Quel est votre choix ?\n"));
         switch ($choix) {
             case "1":
                 echo"Jouer";
+                $personnage=trim(readline("Voulez-vous incarner un heros ou un mechant ? \n"));
+                switch ($personnage) {
+                    case "heros":
+                        //Tant que vie heros>0 && vie méchant>0
+                        $niveau=1;
+                        $vieHero=$Goku->afficherSante();
+                        $vieMechant=$Cell->afficherSante();
+                        $santeGoku=$Goku->afficherSante();
+                        $santeCell=$Cell->afficherSante();
+                        while ($vieHero>0 && $vieMechant>0){
+                            $random=random_int(1,6);
+                            if ($random >= 2) {
+                                $Goku->attaquer($Cell);
+                                $vieMechant=$Cell->afficherSante();
+                                $Cell->afficherStatistique();
+                            } else {
+                                echo "L'ennemi a esquivé votre attaque ! \n";
+                            }
+                            $random=random_int(1,6);
+                            if ($random >= 2) {
+                                $Cell->attaquer($Goku);
+                                $vieHero=$Goku->afficherSante();
+                                $Goku->afficherStatistique();
+                            } else {
+                                echo "Vous avez esquivé l'attaque ! \n";
+                            } 
+                        }
+                        while ($niveau < 3) {
+                            if ($vieMechant> 0){
+                            //GAMEOVER
+                                echo "GAME OVER ! ";
+                                break;
+                            }else{
+                                $niveau+=1;
+                                $Goku->setSante($santeGoku);
+                                $Cell->setSante($santeCell);
+                                $Goku->niveauSuperieur($niveau);
+                                $Cell->niveauSuperieur();
+                                $santeGoku=$Goku->afficherSante();
+                                $santeCell=$Cell->afficherSante();
+                                while ($vieHero>0 && $vieMechant>0){
+                                    $random=random_int(1,6);
+                                    if ($random > 2) {
+                                        $Goku->attaquer($Cell);
+                                        $vieMechant=$Cell->afficherSante();
+                                        $Cell->afficherStatistique();
+                                    } else {
+                                        echo "L'ennemi a esquivé votre attaque ! ";
+                                    }
+                                    $random=random_int(1,6);
+                                    if ($random > 2) {
+                                        $Cell->attaquer($Goku);
+                                        $vieHero=$Goku->afficherSante();
+                                        $Goku->afficherStatistique();
+                                    } else {
+                                        echo "Vous avez esquivé l'attaque ! ";
+                                    } 
+                                }
+                            }
+                
+                        }
+                        echo"Félicitation ! Vous avez gagné ! \n";
+            break;
+            case "mechant":
                 //Tant que vie heros>0 && vie méchant>0
+                $niveau=1;
                 $vieHero=$Goku->afficherSante();
                 $vieMechant=$Cell->afficherSante();
+                $santeGoku=$Goku->afficherSante();
+                $santeCell=$Cell->afficherSante();
                 while ($vieHero>0 && $vieMechant>0){
-                    $Goku->attaquer($Cell);
-                    $vieMechant=$Cell->afficherSante();
-                    $Cell->afficherStatistique();
-                    $Cell->attaquer($Goku);
-                    $vieHero=$Goku->afficherSante();
-                    $Goku->afficherStatistique();
+                    $random=random_int(1,6);
+                    if ($random >= 2) {
+                        $Cell->attaquer($Goku);
+                        $vieHero=$Goku->afficherSante();
+                        $Goku->afficherStatistique();
+                    } else {
+                        echo "L'ennemi a esquivé votre attaque ! \n";
+                    }
+                    $random=random_int(1,6);
+                    if ($random >= 2) {
+                        $Goku->attaquer($Cell);
+                        $vieMechant=$Cell->afficherSante();
+                        $Cell->afficherStatistique();
+                    } else {
+                        echo "Vous avez esquivé l'attaque ! \n";
+                    } 
                 }
-                //If
-                //Victoire = Message vixtoire + augmentation puissance/vie... $niveau+=1 DEblocage de Kamehameha 
-                //Rajouter interaction joueur : choix attaque
-                //ELSE
-                //DEFAITE = GAME OVER ==> Retour Menu Principal
-                //Faire message victoire combat/défaite
+                while ($niveau < 3) {
+                    if ($vieMechant> 0){
+                    //GAMEOVER
+                        echo "GAME OVER ! ";
+                        break;
+                    }else{
+                        $niveau+=1;
+                        $Goku->setSante($santeGoku);
+                        $Cell->setSante($santeCell);
+                        $Goku->niveauSuperieur($niveau);
+                        $Cell->niveauSuperieur();
+                        $santeGoku=$Goku->afficherSante();
+                        $santeCell=$Cell->afficherSante();
+                        while ($vieHero>0 && $vieMechant>0){
+                            $random=random_int(1,6);
+                            if ($random > 2) {
+                                $Cell->attaquer($Goku);
+                                $vieHero=$Goku->afficherSante();
+                                $Goku->afficherStatistique();
+                                
+                            } else {
+                                echo "L'ennemi a esquivé votre attaque ! ";
+                            }
+                            $random=random_int(1,6);
+                            if ($random > 2) {
+                                $Goku->attaquer($Cell);
+                                $vieMechant=$Cell->afficherSante();
+                                $Cell->afficherStatistique();
+                            } else {
+                                echo "Vous avez esquivé l'attaque ! ";
+                            } 
+                        }
+                    }
+        
+                }
+                echo"Félicitation ! Vous avez gagné ! \n";
+                break;
+        }
                 //Système d'objectif
                 //Système de sauvegarde
 
                 break;
             case "2":
-                echo "Le jeu comporte au minimum 2 joueurs. Le but est de remporté le plus de combat possible pour gagner le jeu.\n
-Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le permets'\n";
-                $revenir_menu=readline("Pour revenir sur le Menu merci de taper 'Go' : \n");
+                echo "Le jeu comporte 2 joueurs. Le but est de remporté tous les combats pour gagner le jeu.\n
+                Bonne chance à tous et n'oublie pas, 'Les limites existent uniquement si tu le permets'\n";
+                $revenir_menu=trim(readline("Pour revenir sur le Menu merci de taper 'Go' : \n"));
                 if ($revenir_menu== "Go"){
                     popen("cls", "w");
                     //Menu($Commence,$Goku,$Cell);
@@ -175,10 +308,10 @@ Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le
                 echo "Les Héros :\n
                 - Goku : il a 100 PV, et posséde un avantage, le bouclier\n
                 - Vegeta : il possède plus de PV que les autres personnages, soit 120 PV\n
-Les Méchants :\n
+                Les Méchants :\n
                 - Freezer : il a davantage de vie, soit 140 PV \n
                 - Cell : il fait perdre 20 PV à ces adversaires et a 100 PV.\n";
-                $revenir_menu=readline("\nPour revenir sur le Menu merci de taper 'Go' : \n");
+                $revenir_menu=trim(readline("\nPour revenir sur le Menu merci de taper 'Go' : \n"));
                 if ($revenir_menu== "Go"){
                     popen("cls", "w");
                 }
