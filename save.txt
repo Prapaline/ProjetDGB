@@ -1,0 +1,8 @@
+Goku,20,100,Bouclier
+Cell,30,100,plus de dégat
+Goku,20,100,Bouclier
+Cell,30,100,plus de dégat
+Goku,20,100,Bouclier
+Freezer,10,140,plus de vie
+Goku,20,100,Bouclier
+Cell,30,100,plus de dégat

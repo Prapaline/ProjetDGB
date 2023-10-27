@@ -37,6 +37,10 @@ class Heros extends Personnage
     public function afficherNom(){
         return $this->nom;
     }
+    public function setNom($nom){
+        $this->nom=$nom;
+    
+    }
     public function afficherSante(){
         return $this->pointdevie;//retourne les points de vie
     }
@@ -48,8 +52,16 @@ class Heros extends Personnage
     public function afficherPuissance(){
         return $this->puissance;//retourne la puissance
     }
+    public function setPuissance($puissance){
+        $this->puissance=$puissance;
+    
+    }
     public function afficherAvantage(){
         return $this->avantage;
+    }
+    public function setAvantage($avantage){
+        $this->avantage=$avantage;
+    
     }
     //Fontion permettant d'afficher les statistiques (nom, vie, puissance) du joueur dans une phrase
     public function afficherStatistique(){
@@ -185,7 +197,7 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
         switch ($choix) {
             case "1":
                 //demande à l'utilisateur s'il veut être un héro ou un méchant
-                $personnage=readline("Voulez-vous incarner un héros ou un méchant ? \n");
+                $personnage=readline("Voulez-vous incarner un heros ou un mechant ? \n");
                 switch ($personnage) {
                     case "heros":
                         //demande à l'utilisateur le personnage de son choix entre les 2 propositions
@@ -216,6 +228,21 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                     }
                         // premier niveau = 1
                         $niveau=1;
+                        //Récupération des attributs a stocker pour le héro et le méchant
+                        $data = $hero->afficherNom().",".$hero->afficherPuissance().",".$hero->afficherSante().",".$hero->afficherAvantage()."\n".$mechant->afficherNom().",".$mechant->afficherPuissance().",".$mechant->afficherSante().",".$mechant->afficherDestructeur()."\n";
+                        //Création d'un fichier txt pour la sauvegarde s'il n'existe pas déjà
+                        file_put_contents("save.txt",$data,FILE_APPEND);
+                        
+                        $data = file_get_contents("save.txt");
+                        //Generation des données sauvegardées
+                        //Récuperation des données sous la forme d'un tableau en fonction des virgules
+                        $tableaudonnee = explode(",", $data);
+                        $hero = new Heros($tableaudonnee[0], $tableaudonnee[1], $tableaudonnee[2],$tableaudonnee[3]);
+                            $hero->setNom($tableaudonnee[0]);
+                            $hero->setPuissance($tableaudonnee[1]);
+                            $hero->setSante($tableaudonnee[2]);
+                            $hero->setAvantage($tableaudonnee[3]);
+                            
                          //on appelle diverses fonctions nous permettant d'afficher les informations des personnages
                         $vieHero=$hero->afficherSante();
                         $vieMechant=$mechant->afficherSante();
