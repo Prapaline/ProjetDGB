@@ -237,7 +237,9 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                         //Generation des données sauvegardées
                         //Récuperation des données sous la forme d'un tableau en fonction des virgules
                         $tableaudonnee = explode(",", $data);
+                        //Création de la classe héro en fonction des données
                         $hero = new Heros($tableaudonnee[0], $tableaudonnee[1], $tableaudonnee[2],$tableaudonnee[3]);
+
                             $hero->setNom($tableaudonnee[0]);
                             $hero->setPuissance($tableaudonnee[1]);
                             $hero->setSante($tableaudonnee[2]);
