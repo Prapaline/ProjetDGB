@@ -185,7 +185,7 @@ $Commence=trim(readline("Voulez-vous commencer (Oui / Non)? "));
                         $vieMechant=$Cell->afficherSante();
                         $santeGoku=$heros->afficherSante();
                         $santeCell=$Cell->afficherSante();
-                        while ($vieMechant>0 && $vieHero>0){
+                        while ($vie>0 && $vieHero>0){
                             $random=random_int(1,6);
                             if ($random >= 2) {
                                 $heros->attaquer($Cell);
