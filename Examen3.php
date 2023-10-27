@@ -377,6 +377,7 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                                 echo "GAME OVER ! ";
                                 break;
                         }
+                        sauvegarde($heros,$mechant);
                         $niveau+=1;
                         $kame=1;
 
@@ -461,7 +462,8 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                                     
                                 }
                             }
-                            echo"Félicitation ! Vous avez gagné ! \n";        
+                            echo"Félicitation ! Vous avez gagné ! \n";  
+                            sauvegarde($heros,$mechant);      
                         }
                 
             case "2": //2eme choix du menu
@@ -493,8 +495,67 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
         }
         
     }
-    
 
+
+//Backup 1
+
+//données à sauvegarder
+// $sauvegarde_jeu=[
+//     "personnage1"=> $hero,
+//     "personnage2"=> $mechant, 
+// ];
+
+// $sauvegarde_jeu = serialize($listeSave); //
+// //enregistrement des données
+// file_put_contents("Users/sophi/OneDrive/Documents/PHP/Examen POO", $sauvegarde_jeu);
+
+// //lire les données dans un tableau 
+// $data = file_get_contents("Users/sophi/OneDrive/Documents/PHP/Examen POO");
+// $data = unserialize($data);
+
+///////////////////////////////////
+//Backup 2 
+//création du document de sauvegarde
+//$domDocument = new DOMDocument("save.csv",$hero); 
+
+//$domDocument->formatOutput = true; //affichage dans le fichier
+// //éléments à enregistrer
+// $domElement1 = $domDocument->createElement('');
+// $domElement2 = $domDocument->createElement('');
+// $domElement3 = $domDocument->createElement('');
+// //...
+// //éléments précédents ajouter dans le document de sauvegarde
+// $domDocument->appendChild($domElement1);
+// $domElement1->appendChild($domElement2);
+// $domElement1->appendChild($domElement3);
+// //...
+//enregistrement du fichier
+//$domDocument->save("save.txt");
+
+
+
+////////////////////////////////////////
+//Backup 3
+function sauvegarde($hero,$mechant){
+    $fichier = "save.txt";
+    $mode = "w+";
+    $sauvegarde = [
+    "personnage1"=> $hero,
+    "personnage2"=> $mechant
+];
+$row="";
+foreach( $sauvegarde as $key => $value ){
+    $row.="".$key."".$value."\n";
+}
+
+$ressource = fopen("fichier","$mode");
+fwrite($ressource, $row);
+fclose($ressource);
+
+
+
+echo "Sauvegarde effectuée avec succès";
+}
 
 //Menu($Commence,$heros,$mechant);
 ?>
