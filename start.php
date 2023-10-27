@@ -165,25 +165,32 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? ");
     $choix=readline("Quel est votre choix ?\n");
         switch ($choix) {
             case "1":
-                
                 $personnage=readline("Voulez-vous incarner un héros ou un méchant ? \n");
                 switch ($personnage) {
                     case "heros":
                         $choixpersonnage=readline("Voulez vous être Goku ou Vegeta ? \n");
+                        //Aléatoire de méchants
+                        $choixmechant=random_int(1,2);
+                        switch($choixmechant){
+                            case "1":
+                                $mechant=$Cell;
+                                break;
+                            case "2":
+                                $mechant=$Freezer;
+                                break;
+                            default:
+                                echo "Il ne rentrera jamais dans cette case ! ";
+                                break;
+                        }
                         switch ($choixpersonnage) {
                             case "Goku":
                                 $hero=$Goku;
-                                $mechant=$Cell;
                                 break;
                             case "Vegeta":
                                 $hero=$Vegeta;
-                                $mechant=$Cell;
-
                                 break;
                             default:
                                 $hero=$Vegeta;
-                                $mechant=$Cell;
-
                                 break;
                         }
                         //Tant que vie heros>0 && vie méchant>0
@@ -303,6 +310,31 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? ");
                             echo"Félicitation ! Vous avez gagné ! \n";        
             break;
             case "mechant":
+                    $choixpersonnage=readline("Voulez vous être Goku ou Vegeta ? \n");
+                    //Aléatoire de méchants
+                    $choixhero=random_int(1,2);
+                    switch($choixhero){
+                        case "1":
+                            $hero=$Goku;
+                            break;
+                        case "2":
+                            $hero=$Vegeta;
+                            break;
+                        default:
+                            echo "Il ne rentrera jamais dans cette case ! ";
+                            break;
+                    }
+                    switch ($choixpersonnage) {
+                        case "Cell":
+                            $mechant=$Cell;
+                            break;
+                        case "Vegeta":
+                            $mechant=$Freezer;
+                            break;
+                        default:
+                            $mechant=$Cell;
+                            break;
+                    }
                 //Tant que vie heros>0 && vie méchant>0
                 $niveau=1;
                 $vieHero=$Goku->afficherSante();
