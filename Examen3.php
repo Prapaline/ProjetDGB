@@ -194,8 +194,7 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
             case "1": //si la réponse utilisateur est "1"
                 
                 $personnage=readline("Voulez-vous incarner un heros ou un mechant ? \n"); //demande à l'utilisateur s'il veut être un héro ou un méchant
-                switch ($personnage) {
-                    case "heros": //s'il répond "heros"
+                if ($personnage == "heros") {//s'il répond "heros"
                         $choixpersonnage=readline("Voulez vous être Goku ou Vegeta ? \n"); //demande à l'utilisateur le personnage de son choix entre les 2 propositions
                         switch ($choixpersonnage) {
                             case "Goku": //s'il choisi Goku la variable $hero prendra le personnage de $Goku
@@ -328,8 +327,9 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                                 }
                             }
                             echo"Félicitation ! Vous avez gagné ! \n";         //message de la victoire du combat
-            break;
-            case "mechant": //idem que pour le choix "heros". C'est le personnage de l'utilisateur qui commnce de jouer
+                        }
+            
+            if($personnage == "mechant"){ //idem que pour le choix "heros". C'est le personnage de l'utilisateur qui commnce de jouer
                 $choixpersonnage=readline("Voulez vous être Cell ou Freezer ? \n");
                         switch ($choixpersonnage) {
                             case "Cell":
@@ -462,8 +462,8 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
                                 }
                             }
                             echo"Félicitation ! Vous avez gagné ! \n";        
-                break;
-
+                        }
+                
             case "2": //2eme choix du menu
                 echo "Le jeu comporte au minimum 2 joueurs. Le but est de remporté le plus de combat possible pour gagner le jeu.\n
                 Bonne chance à tous et n'oubliez pas, 'Les limites existent uniquement si tu le permets'\n";
@@ -494,7 +494,7 @@ $Commence=readline("Voulez-vous commencer (Oui / Non)? "); //on demande à l'uti
         
     }
     
-}
+
 
 //Menu($Commence,$heros,$mechant);
 ?>
